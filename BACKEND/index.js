@@ -74,20 +74,48 @@ const pool = mysql.createPool({
 
 
 async function insert(id, name, status, responsible, date, price) {
-      const sql = `
-        INSERT INTO leads (id, name, status, responsible, date, price)
-        VALUES (?, ?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-          name = VALUES(name),
-          status = VALUES(status),
-          responsible = VALUES(responsible),
-          date = VALUES(date),
-          price = VALUES(price)
-      `;
-    
       const values = [id, name, status, responsible, date, price];
-    
-      pool.query(sql, values, (err, results) => {
+      //init query
+      await pool.query(`CREATE DATABASE IF NOT EXISTS fixcom;`, values , (err, results) => {
+        if (err) {
+          console.error('Error creating database:', err);
+          // Handle error
+        } else {
+          console.log('database created if not exist');
+          // Handle success
+        }
+      }) 
+
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS leads (id integer primary key,
+          name varchar(255) not null,
+          status varchar(255),
+          responsible varchar(255),
+          date varchar(255),
+          price integer
+        );
+      `,values , (err, results) => {
+        if (err) {
+          console.error('Error creating table', err);
+          // Handle error
+        } else {
+          console.log('table created id not exist');
+          // Handle success
+        }
+      })
+
+      const sql = `
+      INSERT INTO leads (id, name, status, responsible, date, price)
+      VALUES (?, ?, ?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        name = VALUES(name),
+        status = VALUES(status),
+        responsible = VALUES(responsible),
+        date = VALUES(date),
+        price = VALUES(price)
+    `;
+      
+      await pool.query(sql, values, (err, results) => {
         if (err) {
           console.error('Error inserting/updating row:', err);
           // Handle error
@@ -101,6 +129,7 @@ async function insert(id, name, status, responsible, date, price) {
 initialize();
 
 const server = http.createServer(async (request, response) => {
+  // Allow cors header
   const serverHeaders = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
@@ -220,8 +249,8 @@ function convertUnixTimestamp(timestamp) {
     const date = new Date(milliseconds);
   
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Zero-pad the month
-    const day = String(date.getDate()).padStart(2, '0'); // Zero-pad the day
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
   
     return `${year}-${month}-${day}`;
 }
