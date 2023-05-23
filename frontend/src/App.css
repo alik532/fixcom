@@ -1,0 +1,66 @@
+.App {
+    width: 80%;
+}
+
+.leads {
+    margin: 50px 0px;
+    background-color: white;
+}
+
+.leadsHeader {
+    font-size: 13px;
+    box-shadow: 0px 0px 8px 1px;
+    background-color: #E8DEF8;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+}
+
+.leadsList {
+    margin-top: 3px;
+    gap: 3px;
+    background-color: #ECE6F0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.leadItem {
+    padding: 13px 30px;
+    background-color:#FEF7FF;
+    display: flex;
+    flex-direction: row;
+    transition: 0.2s;
+    justify-content: space-between;
+}
+
+.element {
+    cursor: pointer;
+    padding-top: 8px;
+    font-size: 12px;
+    flex-grow: 1;
+    text-align: left;
+    width: 20%;
+    
+}
+
+.leadItem:hover {
+    background-color: #FFD8E4;
+}
+
+.status {
+    font-size: 16px;
+    padding: 5px;
+    background-color: #31111D;
+    color: white;
+    width: fit-content;
+    border-radius: 8px;
+}
+
+.headerElement {
+    flex-grow: 1;
+    text-align: left;
+    width: 20%;
+}

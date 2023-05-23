@@ -1,0 +1,16 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Kanit', sans-serif;
+}
+
+body {
+    background-color:#ECE6F0;
+}
